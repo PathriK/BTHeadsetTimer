@@ -1,6 +1,7 @@
 package in.pathri.android.btheadsettimer;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,24 @@ public class BTReceiver extends BroadcastReceiver {
                     break;
                 case BluetoothAdapter.STATE_TURNING_ON:
                     Log.d(TAG, "BT Turning On");
+                    break;
+            }
+        } else if (action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
+            final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.ERROR);
+            switch (state) {
+                case BluetoothAdapter.STATE_CONNECTED:
+                    Log.d(TAG, "BT Connected");
+                    final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    Log.d(TAG, "BT Name: " + device.getName());
+                    break;
+                case BluetoothAdapter.STATE_CONNECTING:
+                    Log.d(TAG, "BT Connecting");
+                    break;
+                case BluetoothAdapter.STATE_DISCONNECTED:
+                    Log.d(TAG, "BT Disconnected");
+                    break;
+                case BluetoothAdapter.STATE_DISCONNECTING:
+                    Log.d(TAG, "BT Disconnecting");
                     break;
             }
         }
